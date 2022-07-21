@@ -1,0 +1,15 @@
+ fnames<-list.files(path= "E:/MAxent for invassive (생태원)/wc2.1_10m_bio_evl/Env_factors_7_20/Bio_Res2.5_current_pd", 
+                   pattern='grd', full.names=TRUE )  # import current data
+BCh_raster<-raster(fnames[7])   # banchmark raster
+
+for (i in 1:length(fnames)) {  # for making the same extent rasters
+  fnames[i]<-resample(raster(fnames[i]), BCh_raster, method='bilinear') # making extent with extent of bio11 grid
+  print(i)
+    # Rfile<-crop(raster(f),extent(raster(fnams[7])))     
+
+  }
+
+predictors <- stack(fnames)   # stack data  
+path <- file.path(getwd(), "same_extent")
+ExportRasterStack(predictors, path, zip = "", col = NULL)
+unlink(path, recursive = TRUE)      # select unchangable variables from files and paste to future predicton files 
